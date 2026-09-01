@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Los Números en Español (1 - 100+)</title>
+    <style>
+        :root {
+            --primary: #2c3e50;
+            --accent: #3498db;
+            --bg-light: #f4f7f6;
+            --card-bg: #ffffff;
+            --card-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            
+            /* Colores por rangos para facilitar la memorización */
+            --g-basic: #e74c3c;     /* 1-15 (Especiales) */
+            --g-teen: #e67e22;      /* 16-29 (Decenas compuestas) */
+            --g-tens: #f1c40f;      /* Decenas puras */
+            --g-compound: #2ecc71;  /* 31-99 (Decena + y + unidad) */
+            --g-hundreds: #9b59b6;  /* 100+ */
+        }
+
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background-color: var(--bg-light);
+            margin: 0;
+            padding: 20px;
+            color: #333;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        h1 {
+            color: var(--primary);
+            margin-bottom: 8px;
+        }
+
+        p.subtitle {
+            color: #666;
+            font-size: 1.05em;
+        }
+
+        /* Reglas nemotécnicas / Leyenda */
+        .legend {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-bottom: 25px;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.85em;
+            background: white;
+            padding: 6px 12px;
+            border-radius: 20px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+
+        .color-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+
+        /* Modo de Práctica / Toggle */
+        .controls {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        .toggle-btn {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 25px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .toggle-btn:hover {
+            transform: translateY(-2px);
+            opacity: 0.9;
+        }
+
+        /* Cuadrícula de números */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+            gap: 15px;
+            margin-bottom: 40px;
+        }
+
+        .num-card {
+            background-color: var(--card-bg);
+            border-radius: 12px;
+            box-shadow: var(--card-shadow);
+            padding: 15px 10px;
+            text-align: center;
+            cursor: pointer;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            border-top: 5px solid #ccc;
+            user-select: none;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            min-height: 80px;
+        }
+
+        .num-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 16px rgba(0,0,0,0.12);
+        }
+
+        .digits {
+            font-size: 1.8em;
+            font-weight: 800;
+            color: var(--primary);
+            margin-bottom: 4px;
+        }
+
+        .word {
+            font-size: 0.95em;
+            font-weight: 600;
+            color: #444;
+            transition: opacity 0.2s ease;
+        }
+
+        .word.hidden {
+            opacity: 0;
+        }
+
+        /* Colores por grupo de números */
+        .c-basic { border-color: var(--g-basic); }
+        .c-teen { border-color: var(--g-teen); }
+        .c-tens { border-color: var(--g-tens); }
+        .c-compound { border-color: var(--g-compound); }
+
+        /* Sección Especial: 100 y más allá */
+        .section-hundreds {
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: var(--card-shadow);
+            border-top: 6px solid var(--g-hundreds);
+        }
+
+        .section-hundreds h2 {
+            color: var(--primary);
+            margin-top: 0;
+        }
+
+        .examples-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .example-box {
+            background: var(--bg-light);
+            padding: 12px 15px;
+            border-radius: 8px;
+            border-left: 4px solid var(--g-hundreds);
+        }
+
+        .example-box .num {
+            font-size: 1.2em;
+            font-weight: bold;
+            color: var(--primary);
+        }
+
+        .example-box .txt {
+            font-size: 0.95em;
+            color: #555;
+            margin-top: 2px;
+        }
+
+        .rule-note {
+            background-color: #e8f4f8;
+            border-left: 4px solid var(--accent);
+            padding: 10px 15px;
+            font-size: 0.9em;
+            margin-top: 15px;
+            border-radius: 0 8px 8px 0;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <h1>Los Números en Español</h1>
+        <p class="subtitle">Aprende, memoriza y practica los patrones del 1 al 100+</p>
+    </header>
+
+    <div class="legend">
+        <div class="legend-item"><span class="color-dot" style="background: var(--g-basic)"></span> 1-15: Forma única</div>
+        <div class="legend-item"><span class="color-dot" style="background: var(--g-teen)"></span> 16-29: Una sola palabra (Ci / Veinti)</div>
+        <div class="legend-item"><span class="color-dot" style="background: var(--g-tens)"></span> 30-90: Decenas fijas</div>
+        <div class="legend-item"><span class="color-dot" style="background: var(--g-compound)"></span> 31-99: Tres palabras (Decena + y + Unidad)</div>
+    </div>
+
+    <div class="controls">
+        <button class="toggle-btn" id="togglePractice">👁️ Ocultar palabras (Modo Práctica)</button>
+    </div>
+
+    <!-- Cuadrícula 1 a 100 -->
+    <div class="grid" id="numbersGrid"></div>
+
+    <!-- Sección 100 y más allá -->
+    <div class="section-hundreds">
+        <h2>Cien y más allá (101+)</h2>
+        <p>A partir del 100, se usa la palabra <b>"ciento"</b> seguida de cualquier número del 1 al 99 que ya aprendiste.</p>
+        
+        <div class="rule-note">
+            💡 <b>Regla clave:</b> Usa <b>"Cien"</b> solo para la cantidad exacta 100. Usa <b>"Ciento"</b> para 101 en adelante (101 = ciento uno).
+        </div>
+
+        <div class="examples-grid">
+            <div class="example-box">
+                <div class="num">100</div>
+                <div class="txt">Cien</div>
+            </div>
+            <div class="example-box">
+                <div class="num">101</div>
+                <div class="txt">Ciento uno</div>
+            </div>
+            <div class="example-box">
+                <div class="num">105</div>
+                <div class="txt">Ciento cinco</div>
+            </div>
+            <div class="example-box">
+                <div class="num">116</div>
+                <div class="txt">Ciento dieciséis</div>
+            </div>
+            <div class="example-box">
+                <div class="num">125</div>
+                <div class="txt">Ciento veinticinco</div>
+            </div>
+            <div class="example-box">
+                <div class="num">142</div>
+                <div class="txt">Ciento cuarenta y dos</div>
+            </div>
+            <div class="example-box">
+                <div class="num">199</div>
+                <div class="txt">Ciento noventa y nueve</div>
+            </div>
+            <div class="example-box">
+                <div class="num">200</div>
+                <div class="txt">Doscientos</div>
+            </div>
+            <div class="example-box">
+                <div class="num">500</div>
+                <div class="txt">Quinientos</div>
+            </div>
+            <div class="example-box">
+                <div class="num">1.000</div>
+                <div class="txt">Mil</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    const numbersData = [
+        { n: 1, w: "uno", cat: "c-basic" }, { n: 2, w: "dos", cat: "c-basic" }, { n: 3, w: "tres", cat: "c-basic" }, { n: 4, w: "cuatro", cat: "c-basic" }, { n: 5, w: "cinco", cat: "c-basic" },
+        { n: 6, w: "seis", cat: "c-basic" }, { n: 7, w: "siete", cat: "c-basic" }, { n: 8, w: "ocho", cat: "c-basic" }, { n: 9, w: "nueve", cat: "c-basic" }, { n: 10, w: "diez", cat: "c-basic" },
+        { n: 11, w: "once", cat: "c-basic" }, { n: 12, w: "doce", cat: "c-basic" }, { n: 13, w: "trece", cat: "c-basic" }, { n: 14, w: "catorce", cat: "c-basic" }, { n: 15, w: "quince", cat: "c-basic" },
+        
+        { n: 16, w: "dieciséis", cat: "c-teen" }, { n: 17, w: "diecisiete", cat: "c-teen" }, { n: 18, w: "dieciocho", cat: "c-teen" }, { n: 19, w: "diecinueve", cat: "c-teen" }, { n: 20, w: "veinte", cat: "c-tens" },
+        { n: 21, w: "veintiuno", cat: "c-teen" }, { n: 22, w: "veintidós", cat: "c-teen" }, { n: 23, w: "veintitrés", cat: "c-teen" }, { n: 24, w: "veinticuatro", cat: "c-teen" }, { n: 25, w: "veinticinco", cat: "c-teen" },
+        { n: 26, w: "veintiséis", cat: "c-teen" }, { n: 27, w: "veintisiete", cat: "c-teen" }, { n: 28, w: "veintiocho", cat: "c-teen" }, { n: 29, w: "veintinueve", cat: "c-teen" }, { n: 30, w: "treinta", cat: "c-tens" }
+    ];
+
+    // Generar automáticamente del 31 al 99 aplicando reglas del español
+    const tensWords = { 3: "treinta", 4: "cuarenta", 5: "cincuenta", 6: "sesenta", 7: "setenta", 8: "ochenta", 9: "noventa" };
+    const unitsWords = { 1: "uno", 2: "dos", 3: "tres", 4: "cuatro", 5: "cinco", 6: "seis", 7: "siete", 8: "ocho", 9: "nueve" };
+
+    for (let i = 31; i <= 99; i++) {
+        let tenDigit = Math.floor(i / 10);
+        let unitDigit = i % 10;
+
+        if (unitDigit === 0) {
+            numbersData.push({ n: i, w: tensWords[tenDigit], cat: "c-tens" });
+        } else {
+            numbersData.push({ n: i, w: `${tensWords[tenDigit]} y ${unitsWords[unitDigit]}`, cat: "c-compound" });
+        }
+    }
+
+    // Agregar el 100
+    numbersData.push({ n: 100, w: "cien", cat: "c-tens" });
+
+    // Renderizar tarjetas en la cuadrícula
+    const grid = document.getElementById('numbersGrid');
+    
+    numbersData.forEach(item => {
+        const card = document.createElement('div');
+        card.className = `num-card ${item.cat}`;
+        card.innerHTML = `
+            <div class="digits">${item.n}</div>
+            <div class="word">${item.w}</div>
+        `;
+
+        // Permitir hacer clic individual en la tarjeta para revelar/ocultar en modo práctica
+        card.addEventListener('click', () => {
+            const wordEl = card.querySelector('.word');
+            wordEl.classList.toggle('hidden');
+        });
+
+        grid.appendChild(card);
+    });
+
+    // Control del botón Modo Práctica (oculta o muestra todas las palabras)
+    let isPracticeMode = false;
+    const toggleBtn = document.getElementById('togglePractice');
+
+    toggleBtn.addEventListener('click', () => {
+        isPracticeMode = !isPracticeMode;
+        const allWords = document.querySelectorAll('.grid .word');
+
+        allWords.forEach(word => {
+            if (isPracticeMode) {
+                word.classList.add('hidden');
+            } else {
+                word.classList.remove('hidden');
+            }
+        });
+
+        toggleBtn.textContent = isPracticeMode 
+            ? "👁️ Mostrar palabras (Modo Estudio)" 
+            : "👁️ Ocultar palabras (Modo Práctica)";
+    });
+</script>
+
+</body>
+</html>
